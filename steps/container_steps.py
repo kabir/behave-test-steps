@@ -253,7 +253,7 @@ def run_command_and_detach(context, cmd):
 @then(u'run {cmd} in container and check its output for {output_phrase}')
 @then(u'run {cmd} in container and check its output contains {output_phrase}')
 @then(u'run {cmd} in container')
-def run_command_expect_message(context, cmd, output_phrase, timeout=80):
+def run_command_expect_message(context, cmd, output_phrase=None, timeout=80):
     start_time = time.time()
 
     container = context.containers[-1]
@@ -268,7 +268,7 @@ def run_command_expect_message(context, cmd, output_phrase, timeout=80):
             last_output = None
             try:
                 output = container.execute(cmd=cmd).decode()
-                if output_phrase in output:
+                if (not output_phrase) or output_phrase in output:
                     return True
             except ExecException as e:
                 last_output = e.output
