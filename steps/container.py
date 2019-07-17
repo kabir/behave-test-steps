@@ -27,6 +27,8 @@ import json
 import logging
 import os
 import re
+import tarfile
+import tempfile
 import time
 
 try:
@@ -233,3 +235,21 @@ class Container(object):
     def remove_image(self, force=False):
         self.logging.info("Removing image %s" % self.image_id)
         d.remove_image(image=self.image_id, force=force)
+
+    def copy_file_to_container(self, src_file, dest_folder):
+        full_src_file=os.path.join(os.getcwd(), src_file)
+
+        # The Docker library needs tar bytes to put_archive
+        f = tempfile.NamedTemporaryFile()
+        t = tarfile.open(mode='w', fileobj=f)
+        abs_path = os.path.abspath(full_src_file)
+        t.add(abs_path, arcname=os.path.basename(full_src_file), recursive=False)
+        t.close()
+        f.seek(0)
+        try:
+            d.put_archive(
+                container=self.container['Id'],
+                path=dest_folder,
+                data=f.read())
+        finally:
+            f.close()
