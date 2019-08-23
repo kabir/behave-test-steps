@@ -36,6 +36,8 @@ def check_xpath_internal(context, xml_file, xpath, value, strip, timeout=TIMEOUT
         print("Content: " + str(content))
         document = etree.fromstring(content)
 
+        print("XPath: '" + xpath + "'")
+
         if 'xml_namespaces' in context:
             result = document.xpath(xpath, namespaces=context.xml_namespaces)
         else:
