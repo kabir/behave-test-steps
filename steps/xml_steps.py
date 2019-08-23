@@ -37,13 +37,14 @@ def check_xpath_internal(context, xml_file, xpath, value, strip, timeout=TIMEOUT
         document = etree.fromstring(content)
 
         print("XPath: '" + xpath + "'")
+        print("Value: '" + value + "'")
 
         if 'xml_namespaces' in context:
             result = document.xpath(xpath, namespaces=context.xml_namespaces)
         else:
             result = document.xpath(xpath)
 
-        print("result: " + result)
+        #print("result: " + result)
         if isinstance(result, list):
             for option in result:
                 if isinstance(option, str):
@@ -78,7 +79,7 @@ def safe_cast_int(value, default=None):
         return default
 
 def compare_strings(value1, value2, strip):
-    print("'" + value1 + "' == '" + value2 + "'")
+    print("Comparing: '" + value1 + "' == '" + value2 + "'")
     if strip:
         return value1.strip() == value2.strip()
     else:
