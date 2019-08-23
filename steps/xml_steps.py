@@ -74,6 +74,7 @@ def safe_cast_int(value, default=None):
         return default
 
 def compare_strings(value1, value2, strip):
+    print("'" + value1 + "' == '" + value2 + "'")
     if strip:
         return value1.strip() == value2.strip()
     else:
